@@ -1,0 +1,73 @@
+// app/components/ClimateLineChart/ClimateLineChart.tsx
+'use client'; // This directive makes this a Client Component
+import { ClimateChartDataInter as ChartDataPoint } from '@/app/utils/dataTransformer/transformChartData';
+
+import React from 'react';
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer
+} from 'recharts';
+
+// Define the shape of a single data point for our chart
+// interface ChartDataPoint {
+//   year: number;
+//   temperatureChange: number;
+// }
+
+interface ClimateLineChartProps {
+  data: ChartDataPoint[]; // Expect an array of ChartDataPoint objects
+  title: string;
+  lineKey: keyof ChartDataPoint; // The key in the data object for the line value (e.g., 'temperatureChange')
+  lineName: string; // The display name for the line (e.g., 'Temp. Change')
+  xAxisDataKey: keyof ChartDataPoint; // The key in the data object for the X-axis (e.g., 'year')
+}
+
+const ClimateLineChart: React.FC<ClimateLineChartProps> = ({
+  data,
+  title,
+  lineKey,
+  lineName,
+  xAxisDataKey
+}) => {
+  if (!data || data.length === 0) {
+    return <p>No data available to display the chart.</p>;
+  }
+
+  return (
+    <div style={{ width: '100%', height: 400, marginTop: '20px' }}>
+      <h3>{title}</h3>
+      <ResponsiveContainer width="100%" height="100%">
+        <LineChart
+          data={data}
+          margin={{
+            top: 5,
+            right: 30,
+            left: 20,
+            bottom: 5,
+          }}
+        >
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey={xAxisDataKey} />
+          <YAxis />
+          <Tooltip />
+          <Legend />
+          <Line
+            type="monotone" // Creates a smooth curve
+            dataKey={lineKey} // The key from your data that represents the line's Y-value
+            name={lineName}   // Label for the line in the legend/tooltip
+            stroke="#8884d8"  // Color of the line
+            activeDot={{ r: 8 }} // Larger dot on hover
+          />
+        </LineChart>
+      </ResponsiveContainer>
+    </div>
+  );
+};
+
+export default ClimateLineChart;

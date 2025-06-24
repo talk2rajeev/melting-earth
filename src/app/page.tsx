@@ -1,5 +1,5 @@
 import Image from "next/image";
-import TemperatureDisplay from "./components/TemperatureDisplay/TemperatureDisplayt";
+import TemperatureDisplay from "./components/TemperatureDisplay/TemperatureDisplay";
 
 export default function Home() {
   return (
